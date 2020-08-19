@@ -1,0 +1,13 @@
+### Eclipse ###
+
+### Intellij ###
+*.idea
+*.iml
+/out/
+
+
+### Java ###
+
+### Gradle ###
+
+### Maven ###
