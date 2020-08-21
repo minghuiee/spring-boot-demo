@@ -1,12 +1,19 @@
 ### Eclipse ###
 
 ### Intellij ###
-*.idea
+## File
 *.iml
-/out/
-
+## Folder
+.idea
+out/
+log/
+target/
 
 ### Java ###
+
+### NetBeans ###
+
+### VS Code ###
 
 ### Gradle ###
 
