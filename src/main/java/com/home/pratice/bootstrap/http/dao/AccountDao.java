@@ -27,11 +27,10 @@ public class AccountDao implements BaseDao<AdminReq> {
         return new StringBuffer()
                 .append("Insert into ")
                 .append(Const.SPRING_BOOT_DEMO_ADMIN)
-                .append(" (id,name,password) values ('")
+                .append(" (id,name,password,error_login_count) values ('")
                 .append(req.getId()).append("','")
                 .append(req.getName()).append("','")
-                .append(req.getPassword()).append("'")
-                .append(")")
+                .append(req.getPassword()).append("',0)")
                 .toString();
     }
 
@@ -44,7 +43,7 @@ public class AccountDao implements BaseDao<AdminReq> {
     public int add(AdminReq req) {
         String sql = addSql(req);
         log.info(sql);
-        return factory.update(sql, new BeanPropertyRowMapper<>(AdminReq.class));
+        return factory.update(sql);
     }
 
     //@Detete
