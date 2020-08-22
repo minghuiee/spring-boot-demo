@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.home.pratice.bootstrap.common.constant.CustomStatus;
 import com.home.pratice.bootstrap.common.helper.HttpResult;
 import com.home.pratice.bootstrap.common.util.IpUtil;
-import com.home.pratice.bootstrap.http.dto.LogDto;
 import com.home.pratice.bootstrap.http.protocol.req.AdminReq;
 import com.home.pratice.bootstrap.http.service.AccountService;
 import com.home.pratice.bootstrap.http.service.LogService;
@@ -31,7 +30,7 @@ public class AccountController {
     @Autowired
     private LogService logService;
 
-    @PostMapping()
+    @PostMapping("/add_admin")
     @ResponseBody
     public String get(@RequestBody String jsonData, HttpServletRequest httpReq, UsernamePasswordAuthenticationToken auth) {
         String ip = IpUtil.getIp(httpReq);
@@ -43,7 +42,7 @@ public class AccountController {
             //logService.insert(ip,mac,auth)
         } catch (Exception e) {
             log.error("[get] Access failed is due to {}", ExceptionUtils.getStackTrace(e));
-            logService.insert(LogDto.create("", "ERROR", "", e.getMessage(), "", "帳號-取得-意外錯誤"));
+//            logService.insert(LogDto.create("", "ERROR", "", e.getMessage(), "", "帳號-取得-意外錯誤"));
         }
         return HttpResult.result(CustomStatus.SUCCESS, "end execution", String.valueOf(code));
     }
