@@ -2,6 +2,7 @@ package com.home.pratice.bootstrap.http.dao;
 
 
 import com.home.pratice.bootstrap.common.constant.Const;
+import com.home.pratice.bootstrap.http.dto.AdminDto;
 import com.home.pratice.bootstrap.http.interfaces.BaseDao;
 import com.home.pratice.bootstrap.http.protocol.req.AdminReq;
 import com.home.pratice.bootstrap.http.protocol.resp.AccountResp;
@@ -103,9 +104,29 @@ public class AccountDao implements BaseDao<AdminReq, AccountResp> {
         return factory.queryForObject(sql, new BeanPropertyRowMapper<>(AccountResp.class));
     }
 
+    private String queryListSql(AdminReq req) {
+        int pageIndex = req.getPageIndex();
+        int pageSize = req.getPageSize();
+        //前端設定pageIndex開始各有所異，有的從0當第一頁，有的從1當第二頁
+        //從0當第一頁
+//        int startRecord = pageIndex * pageSize + 1;
+//        int endRecord = (pageIndex - 1) * pageSize + 1;
+        //從1當第一頁(如augular ngb-pagination物件為1開始)
+        int startRecord = (pageIndex - 1) * pageSize + 1;
+        int endRecord = pageIndex * pageSize + 1;
+        String start = req.getStartDate();
+        String end = req.getEndDate();
+        //TODO: 字串拼接需改StringBuffer
+        return "SELECT admin.*" +
+                "FROM (SELECT spring_boot_demo_admin.*, ROW_NUMBER() over(order by createDate) AS number FROM spring_boot_demo_admin) admin " +
+                "WHERE number >= " + startRecord + " " +
+                "AND number < " + endRecord + " ";
+    }
+
     @Override
-    public List<AccountResp> queryList(int pageIndex, int pageSize) {
-        //TODO:insert log table
-        throw new UnsupportedOperationException();
+    public List<AccountResp> queryList(AdminReq req) {
+        String sql = queryListSql(req);
+        log.info(sql);
+        return factory.query(sql, new BeanPropertyRowMapper<>(AccountResp.class));
     }
 }
